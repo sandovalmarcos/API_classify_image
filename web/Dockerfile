@@ -1,8 +1,15 @@
-FROM python:3.12-slim
+FROM python:3.10-slim
 
 WORKDIR /app
 
-# Instala setuptools y actualiza pip ANTES de instalar otros paquetes
+# Instala dependencias del sistema y herramientas de compilación
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Actualiza pip y setuptools
 RUN pip install --upgrade pip setuptools wheel
 
 COPY requirements.txt .
